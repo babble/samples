@@ -51,6 +51,33 @@ pre {
   puts "f.moo should be 'rab', it is '#{f.moo()}'"
 }
 
+h3 "Create subclass of JS class in Ruby"
+pre {
+   class SubclassOfMyJSClass < MyJSClass
+     def initialize(arg)
+       super(arg)
+     end
+     def method2
+       "method2: " + moo
+     end
+   end
+
+  puts "SubclassOfMyJSClass.new('bar').method2 = #{SubclassOfMyJSClass.new('bar').method2}"
+}
+
+# # FIXME
+h3 "New class loaded from local file"
+pre {
+  load 'local/ruby/newclass'
+  f = NewClass3.new("bar")
+  puts "Object.constants.include?('NewClass3') = #{Object.constants.include?('NewClass3')}"
+  puts "f is of class #{f.class.name}"
+  puts "f.inspect = #{f.inspect}"
+  puts "f['moo'].getNumParameters = #{f['moo'].getNumParameters}"
+  puts "can access f['foo'], but not f.foo because keySet has no foo. f['foo'] = #{f['foo'] }"
+  puts "f.moo should be 'rab', it is '#{f.moo()}'"
+}
+
 h3 "tojson JS func called with Ruby object"
 pre {
   puts tojson(Struct.new(:name, :age).new('Jim', 4324))
@@ -93,6 +120,19 @@ pre {
     end
   end
   Foo.new.foo()
+}
+
+h2 "GridFS"
+require 'xgen/gridfile'
+pre {
+  GridFile.open('myfile', 'w') { |f|
+    f.write "Hello, GridFS!"
+    f['my-attribute'] = 42
+  }
+  GridFile.open('myfile', 'r') { |f|
+    puts f.read
+    puts "my-attribute = #{f['my-attribute']}"
+  }
 }
 
 h2 "Database"
