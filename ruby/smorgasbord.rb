@@ -297,37 +297,40 @@ track_table {
   puts Track.new.to_tr
 }
 
-h3 "Track.new(hash)"
+h3 "t = Track.new(hash); t.save"
+t = Track.new(:artist => 'Level 42', :album => 'Standing In The Light', :song => 'Micro-Kid', :track => 1)
 track_table {
-  puts Track.new(:artist => 'Level 42', :album => 'Standing In The Light', :song => 'Micro-Kid', :track => 1).to_tr
+  puts t.to_tr
 }
-
-h3 "Track.new(hash).save"
-track_table {
-  puts Track.new(:artist => 'Level 42', :album => 'Standing In The Light', :song => 'Micro-Kid', :track => 1).save.to_tr
-}
+puts "save returned #{t.save}"
 
 h3 "Track.find_or_create_by_song"
 
-track_table("find_or_create_by_song('The Ability to Swing', :artist => 'ignored because song found')") {
-  puts Track.find_or_create_by_song('The Ability to Swing', :artist => 'ignored because song found').to_tr
+s, a = 'The Ability to Swing', 'ignored because song found'
+track_table("find_or_create_by_song(#{s}, :artist => #{a}") {
+  puts Track.find_or_create_by_song(s, :artist => a).to_tr
 }
 
 br
-track_table("find_or_create_by_song('New Song', :artist => 'New Artist', :album => 'New Album')") {
-  puts Track.find_or_create_by_song('New Song', :artist => 'New Artist', :album => 'New Album').to_tr
+s, ar, al = 'New Song', 'New Artist', 'New Album'
+track_table("find_or_create_by_song(#{s}, :artist => #{ar}, :album => #{al})") {
+  puts Track.find_or_create_by_song(s, :artist => ar, :album => al).to_tr
 }
 
-h3 "Track.find(:first, :conditions => {:song => 'King For A Day'}).remove"
-t = Track.find(:first, :conditions => {:song => 'King For A Day'}).remove
+h3 "Track.find(:first, :conditions => {:song => 'King For A Day'}).delete"
+t = Track.find(:first, :conditions => {:song => 'King For A Day'}).delete
 track_table("Track.find(:first, {:song => 'King For A Day'}).remove") {
   Track.find(:all).each { |t| puts t.to_tr }
 }
 
 h3 "Track.find('bogus_id')"
 pre {
-  puts "I should see nothing here; a bogus ID should be trapped and the Ruby code should return nil."
-  puts Track.find('bogus_id')
+  puts "I should see an exception here:"
+  begin
+    Track.find('bogus_id')
+  rescue => ex
+    puts ex.to_s
+  end
 }
 
 
