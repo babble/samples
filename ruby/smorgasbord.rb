@@ -208,8 +208,8 @@ pre {
 
 h3 "Various uses of find"
 
-track_table("Track.coll.findOne(song_id)") {
-  puts Track.new(Track.coll.findOne(song_id)).to_tr
+track_table("Track.collection.findOne(song_id)") {
+  puts Track.new(Track.collection.findOne(song_id)).to_tr
 }
 
 br
@@ -333,6 +333,12 @@ pre {
   end
 }
 
+h2 "new database features"
+
+h3 "Track.find(:all, :conditions => {:song => 'King For A Day'}).explain()"
+pre {
+  puts tojson(Track.find(:all, :conditions => {:song => 'King For A Day'}).explain())
+}
 
 h2 "require"
 
