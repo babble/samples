@@ -208,7 +208,9 @@ pre {
 
 h3 "Various uses of find"
 
-track_table("Track.collection.findOne(song_id)") {
+track_table("Track.new(Track.collection.findOne(song_id))") {
+  # Note that the value returned by Track.collection.findOne is a raw JSObject
+  # (a subclass of Hash), not a Track object. We need to call Track.new.
   puts Track.new(Track.collection.findOne(song_id)).to_tr
 }
 
